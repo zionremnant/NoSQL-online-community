@@ -1,34 +1,13 @@
-const { Schema, Types } = require('mongoose');
-
-const assignmentSchema = new Schema(
+const mongoose = require("mongoose");
+const { shortDate } = require("../utils");
+const Reaction = mongoose.model("Reaction", reactionSchema);
+const reactionSchema = new mongoose.Schema(
   {
-    assignmentId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-    assignmentName: {
-      type: String,
-      required: true,
-      maxlength: 50,
-      minlength: 4,
-      default: 'Unnamed assignment',
-    },
-    score: {
-      type: Number,
-      required: true,
-      default: () => Math.floor(Math.random() * (100 - 70 + 1) + 70),
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+    reactionID: { type: mongoose.Schema.Types.ObjectId },
+    reactionBody: { type: String, required: true, maxlength: 280 },
+    username: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now, get: shortDate },
   },
-  {
-    toJSON: {
-      getters: true,
-    },
-    id: false,
-  }
+  { toJSON: { getters: true }, id: false }
 );
-
-module.exports = assignmentSchema;
+module.exports = Reaction;
