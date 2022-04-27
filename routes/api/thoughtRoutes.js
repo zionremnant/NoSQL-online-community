@@ -1,20 +1,22 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
-  getCourses,
-  getSingleCourse,
-  createCourse,
-  updateCourse,
-  deleteCourse,
-} = require('../../controllers/courseController.js');
+  createThought,
+  getThought,
+  getSingleThought,
+  editThought,
+  deleteThought,
+} = require("../../controllers/thoughtController.js");
 
-// /api/courses
-router.route('/').get(getCourses).post(createCourse);
+// /api/thought
+router.route("/").get(getThought);
 
-// /api/courses/:courseId
+// /api/thought/:thoughtId
 router
-  .route('/:courseId')
-  .get(getSingleCourse)
-  .put(updateCourse)
-  .delete(deleteCourse);
+  .route("/:thoughtID")
+  .get(getSingleThought)
+  .put(editThought)
+  .delete(deleteThought);
+
+router.route("/:userID").post(createThought);
 
 module.exports = router;

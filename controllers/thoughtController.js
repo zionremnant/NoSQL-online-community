@@ -17,7 +17,7 @@ module.exports = {
       })
       .catch((err) => next(err));
   },
-  getThoughts(req, res, next) {
+  getThought(req, res, next) {
     thought
       .find()
       .populate("reactions")
