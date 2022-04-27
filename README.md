@@ -1,46 +1,148 @@
 # NoSQL-online-community
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Getting Started](#getting-started)
+- [Links](#links)
+
 ## Summary
 
 Using Express.js for routing, a MongoDB database, the Mongoose ODM, Express.js, and Mongoose packages, it constructs an API for a social network web application that allows users to share their thoughts, react to the thoughts of their friends, and create a friend list.
 
-## Table of Contents
+## Getting Started
 
-- [Anchors](#anchors)
-- [Quantifiers](#quantifiers)
-- [Grouping Constructs](#grouping-constructs)
-- [Bracket Expressions](#bracket-expressions)
-- [Character Classes](#character-classes)
-- [Reference](#reference)
-- [Author](#author)
+Be sure to have MongoDB installed on your machine.
 
-## Regex Components
+### Models
 
-### Anchors
+**User**:
 
-Anchors are `^` and `$`. `^` is placed in the beginning, and `$` is placed at the end.
+- `username`
 
-### Quantifiers
+  - String
+  - Unique
+  - Required
+  - Trimmed
 
-Quantifiers provide the minimum number of instances of a character, group, or character class in the input required to find a match. For instance, `+` and `{ }` are quantifiers. If a user uses `+`, it indicates that the pattern can be duplicated multiple times. Depending on how many characters are displayed in the `{ }`, there are multiple definitions. For example, if the users see `{3,8}`, it means that the email must have more than 3 numbers but not more than 8.
+- `email`
 
-### Grouping Constructs
+  - String
+  - Required
+  - Unique
+  - Must match a valid email address (look into Mongoose's matching validation)
 
-A subexpression is the most popular technique to describe `( )` in Regex. This signifies that the characters have been divided into pieces to make them easier to read. There are 3 sets of `( )` in this example. Each of these sections is a distinct portion of the email.
+- `thoughts`
 
-### Bracket Expressions
+  - Array of `_id` values referencing the `Thought` model
 
-There are 3 sets of brackets. The character set is indicated by these brackets. In the email, any character found in a bracket set is included. `[a-z]` and `[0-9]` are two examples that indicate a section of the email.
+- `friends`
+  - Array of `_id` values referencing the `User` model (self-reference)
 
-### Character Classes
+**Schema Settings**:
 
-Character classes are divided into two categories, which are character escapes and character classes. A `\` is used in a character escape to make the characters in a `[\]`. It is meant to be taken literally. A `\` can be used to represent an escape in this case. Any of the characters in the regex sequence can be classified as a character class.
+Create a virtual called `friendCount` that retrieves the length of the user's `friends` array field on query.
 
-## Reference
+---
 
-https://coding-boot-camp.github.io/full-stack/computer-science/regex-tutorial
+**Thought**:
 
-## Author
+- `thoughtText`
 
-- Created by: Zion Yang
+  - String
+  - Required
+  - Must be between 1 and 280 characters
+
+- `createdAt`
+
+  - Date
+  - Set default value to the current timestamp
+  - Use a getter method to format the timestamp on query
+
+- `username` (The user that created this thought)
+
+  - String
+  - Required
+
+- `reactions` (These are like replies)
+  - Array of nested documents created with the `reactionSchema`
+
+**Schema Settings**:
+
+Create a virtual called `reactionCount` that retrieves the length of the thought's `reactions` array field on query.
+
+---
+
+**Reaction** (SCHEMA ONLY)
+
+- `reactionId`
+
+  - Use Mongoose's ObjectId data type
+  - Default value is set to a new ObjectId
+
+- `reactionBody`
+
+  - String
+  - Required
+  - 280 character maximum
+
+- `username`
+
+  - String
+  - Required
+
+- `createdAt`
+  - Date
+  - Set default value to the current timestamp
+  - Use a getter method to format the timestamp on query
+
+**Schema Settings**:
+
+This will not be a model, but rather will be used as the `reaction` field's subdocument schema in the `Thought` model.
+
+### API Routes
+
+**`/api/users`**
+
+- `GET` all users
+
+- `GET` a single user by its `_id` and populated thought and friend data
+
+- `POST` a new user:
+
+- `PUT` to update a user by its `_id`
+
+- `DELETE` to remove user by its `_id`
+
+---
+
+**`/api/users/:userId/friends/:friendId`**
+
+- `POST` to add a new friend to a user's friend list
+
+- `DELETE` to remove a friend from a user's friend list
+
+---
+
+**`/api/thoughts`**
+
+- `GET` to get all thoughts
+
+- `GET` to get a single thought by its `_id`
+
+- `POST` to create a new thought (don't forget to push the created thought's `_id` to the associated user's `thoughts` array field)
+- `PUT` to update a thought by its `_id`
+
+- `DELETE` to remove a thought by its `_id`
+
+---
+
+**`/api/thoughts/:thoughtId/reactions`**
+
+- `POST` to create a reaction stored in a single thought's `reactions` array field
+
+- `DELETE` to pull and remove a reaction by the reaction's `reactionId` value
+
+## Links
+
 - GitHub: https://github.com/zionremnant
