@@ -1,10 +1,8 @@
-const user = require("../models/user");
-const thought = require("../models/thought");
+const Thought = require("../models/Thought");
 
 module.exports = {
   createThought(req, res, next) {
-    thought
-      .create(req.body)
+    Thought.create(req.body)
       .then((thought) => {
         return user.findOneAndUpdate(
           { _id: req.params.userID },
@@ -18,31 +16,27 @@ module.exports = {
       .catch((err) => next(err));
   },
   getThought(req, res, next) {
-    thought
-      .find()
+    Thought.find()
       .populate("reactions")
       .then((thoughts) => res.status(200).json(thoughts))
       .catch((err) => next(err));
   },
   getSingleThought(req, res, next) {
-    thought
-      .findOne({ _id: req.params.thoughtID })
+    Thought.findOne({ _id: req.params.thoughtID })
       .populate("reactions")
       .then((dbThoughtData) => res.status(200).json(dbThoughtData))
       .catch((err) => next(err));
   },
   editThought(req, res, next) {
-    thought
-      .findOneAndUpdate({ _id: req.params.thoughtID }, req.body, {
-        returnDocument: "after",
-      })
+    Thought.findOneAndUpdate({ _id: req.params.thoughtID }, req.body, {
+      returnDocument: "after",
+    })
       .then((dbThoughtData) => res.status(200).json(dbThoughtData))
       .catch((err) => next(err));
   },
 
   deleteThought(req, res, next) {
-    thought
-      .deleteOne({ _id: req.params.thoughtID })
+    Thought.deleteOne({ _id: req.params.thoughtID })
       .then((dbDeleteThoughtResponse) => {
         res.status(200).json(dbDeleteThoughtResponse);
       })

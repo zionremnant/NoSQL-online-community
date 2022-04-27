@@ -1,10 +1,8 @@
-const reaction = require("../models/reaction");
-const thought = require("../models/thought");
+const Reaction = require("../models/reaction");
 
 module.exports = {
   createReaction(req, res, next) {
-    reaction
-      .create(req.body)
+    Reaction.create(req.body)
       .then((reaction) => {
         return thought.findOneAndUpdate(
           { _id: req.params.thoughtID },
@@ -18,8 +16,7 @@ module.exports = {
       .catch((err) => next(err));
   },
   deleteReaction(req, res, next) {
-    reaction
-      .deleteOne({ _id: req.params.reactionID })
+    Reaction.deleteOne({ _id: req.params.reactionID })
       .then((dbDeleteResponse) => {
         res.status(200).json(dbDeleteResponse);
       })
