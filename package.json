@@ -1,11 +1,10 @@
 {
   "name": "nosql-online-community",
   "version": "1.0.1",
-  "description": "Mongoose back-end project - Main",
+  "description": "Mongoose back-end project",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
-    "start": "node index"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
