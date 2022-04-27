@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { longDate } = require("../utils");
-// Schema to create a course model
+// Schema to create a thought model
 const thoughtSchema = new mongoose.Schema(
   {
     reactions: [{ type: mongoose.Schema.ObjectId, ref: "Reaction" }],

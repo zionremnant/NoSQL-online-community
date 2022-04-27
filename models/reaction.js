@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { shortDate } = require("../utils");
 const Reaction = mongoose.model("Reaction", reactionSchema);
+// Schema to create a reaction model
 const reactionSchema = new mongoose.Schema(
   {
     reactionID: { type: mongoose.Schema.Types.ObjectId },
