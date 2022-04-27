@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { shortDate } = require("../utils");
-const Reaction = mongoose.model("Reaction", reactionSchema);
+
 // Schema to create a reaction model
 const reactionSchema = new mongoose.Schema(
   {
@@ -11,4 +11,5 @@ const reactionSchema = new mongoose.Schema(
   },
   { toJSON: { getters: true }, id: false }
 );
+const Reaction = mongoose.model("Reaction", reactionSchema);
 module.exports = Reaction;

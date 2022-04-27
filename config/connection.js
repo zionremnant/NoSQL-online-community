@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/socialNetworkDB", {
+mongoose.connect("mongodb://localhost:27017/socialNetworkDBtwo", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
