@@ -145,4 +145,4 @@ This will not be a model, but rather will be used as the `reaction` field's subd
 
 ## Links
 
-- GitHub: https://github.com/zionremnant
+- GitHub: `https://github.com/zionremnant`
